@@ -1,4 +1,4 @@
-name: CI Workflow
+name: CI/CD Workflow
 
 on:
   push:
@@ -9,29 +9,89 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check out the code
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set up cache
-        uses: actions/cache@v3
+      # Step 2: Set up Node.js with caching for dependencies
+      - name: Set up Node.js with cache
+        uses: actions/setup-node@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
 
+      # Step 3: Install dependencies and build code
       - name: Install dependencies
         run: npm install
 
-      - name: Build project
+      - name: Build code
         run: npm run build
 
-      - name: Upload artifact
+      # Step 4: Save the build output as an artifact
+      - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
-          path: dist/
+          path: dist/  # Replace 'dist/' with the correct output directory
+
+      # Step 5: Log in to Docker Hub (or other registry)
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      - name: Read version from VERSION file
+        id: version_step
+        run: |
+          # Read the entire content of the VERSION file and trim any surrounding whitespace
+          VERSION=$(cat VERSION | xargs)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Version extracted: $VERSION"
+
+      # Step 6: Build the Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.REGISTRY_URL }}/mynode:${{ github.sha }} .
+          docker tag ${{ secrets.REGISTRY_URL }}/mynode:${{ github.sha }} ${{ secrets.REGISTRY_URL }}/mynode:latest
+
+      # Step 7: Push the Docker image to the registry
+      - name: Push Docker image to registry
+        run: |
+          docker push ${{ secrets.REGISTRY_URL }}/mynode:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_URL }}/mynode:latest
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+            # Step 2: Install kubectl
+      - name: Install kubectl
+        run: |
+          # Download kubectl binary
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          # Make it executable
+          chmod +x kubectl
+          # Move it to a directory in the PATH
+          sudo mv kubectl /usr/local/bin/
+      - name: Set up kubectl for Minikube
+        run: |
+          # Ensure kubectl is using the Minikube context
+          # kubectl config use-context minikube
+          # Verify the Minikube status
+          kubectl get nodes
+      - name: Deploy Pod using YAML from repository
+        run: |
+          # Apply the YAML file stored in the repository
+          ls
+          kubectl apply -f ./k8s/node.yaml  
+          kubectl get svc  
+      - name: Verify Pod is Running
+        run: |
+          kubectl get pods
