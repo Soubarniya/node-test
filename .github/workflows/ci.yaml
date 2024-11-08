@@ -67,6 +67,7 @@ jobs:
           docker push ${{ secrets.REGISTRY_URL }}/mynode:latest
   deploy:
     runs-on: self-hosted
+    needs: build-and-deploy
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -95,3 +96,5 @@ jobs:
       - name: Verify Pod is Running
         run: |
           kubectl get pods
+
+##
