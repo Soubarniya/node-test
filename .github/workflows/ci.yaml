@@ -62,7 +62,7 @@ jobs:
       # Step 7: Push the Docker image to the registry
       - name: Push Docker image
         run: |
-          docker push soubarniya/mynode:latest:${{ env.VERSION }}
+          docker push soubarniya/mynode:${{ env.VERSION }}
   deploy:
     runs-on: self-hosted
     needs: build-and-deploy
