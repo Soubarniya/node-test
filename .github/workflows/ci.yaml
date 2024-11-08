@@ -55,16 +55,14 @@ jobs:
           echo "Version extracted: $VERSION"
 
       # Step 6: Build the Docker image
-      - name: Build Docker image
+      - name: Build Docker image with extracted version
         run: |
-          docker build -t ${{ secrets.REGISTRY_URL }}/mynode:${{ github.sha }} .
-          docker tag ${{ secrets.REGISTRY_URL }}/mynode:${{ github.sha }} ${{ secrets.REGISTRY_URL }}/mynode:latest
+          docker build -t mynode:latest:${{ env.VERSION }} .
 
       # Step 7: Push the Docker image to the registry
-      - name: Push Docker image to registry
+      - name: Push Docker image
         run: |
-          docker push ${{ secrets.REGISTRY_URL }}/mynode:${{ github.sha }}
-          docker push ${{ secrets.REGISTRY_URL }}/mynode:latest
+          docker push mynode:latest:${{ env.VERSION }}
   deploy:
     runs-on: self-hosted
     needs: build-and-deploy
