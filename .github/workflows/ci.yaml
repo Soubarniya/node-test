@@ -60,8 +60,8 @@ jobs:
       # Step 6: Build the Docker image
       - name: Build Docker image with extracted version
         run: |
-          docker build -t soubarniya/mynode:${{ env.VERSION }} .
-          docker push soubarniya/mynode:${{ env.VERSION }}
+          docker buildx build --platform linux/amd64 -t soubarniya/mynode:${{ env.VERSION }} --push .
+
 
 #   deploy:
 #     runs-on: self-hosted
