@@ -50,7 +50,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           
       - name: Read version from VERSION file
-        id: version_step
+        id: read_version
         run: |
           # Read the entire content of the VERSION file and trim any surrounding whitespace
           VERSION=$(cat VERSION | xargs)
