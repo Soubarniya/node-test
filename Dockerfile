@@ -9,7 +9,7 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 # Step 4: Copy the rest of the application files
-COPY src/ .
+COPY . .
 
 # Step 5: Expose the port the app runs on
 EXPOSE 3000
