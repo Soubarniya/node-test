@@ -67,9 +67,9 @@ jobs:
         run: |
           pwd
           ls -la
-          git clone https://github.com/Soubarniya/kubernetes-deployment.git
+          git clone https://github.com/Soubarniya/argocd.git
           ls -la
-          cd kubernetes-deployment
+          cd argocd
           ls -la
           sed -i "s|image: soubarniya/mynode:.*|image: soubarniya/mynode:${{ env.VERSION }}|" node.yaml
           cat node.yaml
@@ -79,4 +79,4 @@ jobs:
           git config --global user.name "Soubarniya"
           git add node.yaml
           git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
-          git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Soubarniya/kubernetes-deployment.git
+          git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Soubarniya/argocd.git
