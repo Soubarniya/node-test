@@ -63,36 +63,20 @@ jobs:
           docker build -t soubarniya/mynode:${{ env.VERSION }} .
           docker push soubarniya/mynode:${{ env.VERSION }}
 
-#   deploy:
-#     runs-on: self-hosted
-#     needs: build-and-deploy
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v4
-
-#             # Step 2: Install kubectl
-#       - name: Install kubectl
-#         run: |
-#           # Download kubectl binary
-#           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-#           # Make it executable
-#           chmod +x kubectl
-#           # Move it to a directory in the PATH
-#           sudo mv kubectl /usr/local/bin/
-#       - name: Set up kubectl for Minikube
-#         run: |
-#           # Ensure kubectl is using the Minikube context
-#           # kubectl config use-context minikube
-#           # Verify the Minikube status
-#           kubectl get nodes
-#       - name: Deploy Pod using YAML from repository
-#         run: |
-#           # Apply the YAML file stored in the repository
-#           ls
-#           kubectl apply -f ./k8s/node.yaml  
-#           kubectl get svc  
-#       - name: Verify Pod is Running
-#         run: |
-#           kubectl get pods
-
-# ##
+      - name: Update Kubernetes manifest
+        run: |
+          pwd
+          ls -la
+          git clone https://github.com/Soubarniya/kubernetes-deployment.git
+          ls -la
+          cd kubernetes-deployment
+          ls -la
+          sed -i "s|image: soubarniya/mynode:.*|image: soubarniya/mynode:${{ env.VERSION }}|" node.yaml
+          cat node.yaml
+          # Configure Git
+          git init .
+          git config --global user.email "leosphere2001@gmail.com"
+          git config --global user.name "Soubarniya"
+          git add node.yaml
+          git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
+          git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Soubarniya/kubernetes-deployment.git
