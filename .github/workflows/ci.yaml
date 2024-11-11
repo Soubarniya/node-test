@@ -79,7 +79,10 @@ jobs:
           git init .
           git config --global user.email "leosphere2001@gmail.com"
           git config --global user.name "Soubarniya"
-          git add node.yaml
-          git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
-          git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Soubarniya/argocd.git
-#
+          if git diff --exit-code --quiet; then
+            echo "No changes to commit."
+          else
+            git add node.yaml
+            git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
+            git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Soubarniya/argocd.git
+#         fi
