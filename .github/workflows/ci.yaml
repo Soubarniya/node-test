@@ -72,7 +72,6 @@ jobs:
           cd argocd
           ls -la
           sed -i "s|image: soubarniya/mynode:.*|image: soubarniya/mynode:${{ env.VERSION }}|" node.yaml
-           # Verify changes
           git status
           git diff
           cat node.yaml
