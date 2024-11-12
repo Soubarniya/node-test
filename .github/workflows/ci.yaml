@@ -86,5 +86,5 @@ jobs:
           else
             git add node.yaml
             git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
-            git push origin main
+            git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
           fi
