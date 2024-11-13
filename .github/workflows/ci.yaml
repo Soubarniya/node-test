@@ -8,6 +8,16 @@ on:
     branches:
       - main
   workflow_dispatch:
+    workflow_dispatch:
+    inputs:
+      name:
+        description: 'sou'
+        required: true
+        default: 'hi'
+      home:
+        description: 'mumbai'
+        required: true
+        default: 'india'
 
 jobs:
   build-and-deploy:
