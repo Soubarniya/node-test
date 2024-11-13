@@ -63,43 +63,55 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Install Trivy
+        run: |
+          sudo apt-get install wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install trivy
+      # Step 5: Run Trivy vulnerability scan on Docker image
+      - name: Run Docker image vulnerability scan with Trivy
+        run: |
+          docker pull manisankardivi/new:200.000.008
+          trivy image --severity HIGH,CRITICAL --exit-code 1 manisankardivi/new:200.000.008
           
-      - name: Read version from VERSION file
-        id: read_version
-        run: |
-          # Read the entire content of the VERSION file and trim any surrounding whitespace
-          VERSION=$(cat VERSION | xargs)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Version extracted: $VERSION"
+      # - name: Read version from VERSION file
+      #   id: read_version
+      #   run: |
+      #     # Read the entire content of the VERSION file and trim any surrounding whitespace
+      #     VERSION=$(cat VERSION | xargs)
+      #     echo "VERSION=$VERSION" >> $GITHUB_ENV
+      #     echo "Version extracted: $VERSION"
 
-      # Step 6: Build the Docker image
-      - name: Build Docker image with extracted version
-        run: |
-          docker build -t soubarniya/mynode:${{ env.VERSION }} .
-          docker push soubarniya/mynode:${{ env.VERSION }}
+      # # Step 6: Build the Docker image
+      # - name: Build Docker image with extracted version
+      #   run: |
+      #     docker build -t soubarniya/mynode:${{ env.VERSION }} .
+      #     docker push soubarniya/mynode:${{ env.VERSION }}
 
-      - name: Update Kubernetes manifest
-        run: |
-          pwd
-          ls -la
-          git clone https://github.com/Soubarniya/argocd.git
-          ls -la
-          cd argocd
-          ls -la
-          sed -i "s|image: soubarniya/mynode:.*|image: soubarniya/mynode:${{ env.VERSION }}|" node.yaml
-          git status
-          git diff
-          cat node.yaml
-          # Configure Git
-          # git init .
-          git config --global user.email "leosphere2001@gmail.com"
-          git config --global user.name "Soubarniya"
+      # - name: Update Kubernetes manifest
+      #   run: |
+      #     pwd
+      #     ls -la
+      #     git clone https://github.com/Soubarniya/argocd.git
+      #     ls -la
+      #     cd argocd
+      #     ls -la
+      #     sed -i "s|image: soubarniya/mynode:.*|image: soubarniya/mynode:${{ env.VERSION }}|" node.yaml
+      #     git status
+      #     git diff
+      #     cat node.yaml
+      #     # Configure Git
+      #     # git init .
+      #     git config --global user.email "leosphere2001@gmail.com"
+      #     git config --global user.name "Soubarniya"
           
-          # Commit and push changes if there’s an update
-          if git diff --exit-code --quiet; then
-            echo "No changes to commit."
-          else
-            git add node.yaml
-            git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
-            git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
-          fi
+      #     # Commit and push changes if there’s an update
+      #     if git diff --exit-code --quiet; then
+      #       echo "No changes to commit."
+      #     else
+      #       git add node.yaml
+      #       git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
+      #       git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
+      #     fi
