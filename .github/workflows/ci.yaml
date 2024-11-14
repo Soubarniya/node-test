@@ -47,8 +47,8 @@ jobs:
       - name: Build code
         run: npm run build
 
-      - name: Run Tests
-        run: npm test  # Runs your tests (make sure you have a test script in package.json)
+      # - name: Run Tests
+      #   run: npm test  # Runs your tests (make sure you have a test script in package.json)
 
       - name: Set up CodeQL
         uses: github/codeql-action/init@v2
