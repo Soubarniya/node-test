@@ -7,12 +7,14 @@
     "test": "jest",
     "build": "mkdir -p dist && rsync -av --exclude='dist' ./ dist/",
     "start": "node ./index.js"
-    
   },
   "dependencies": {
     "express": "^4.21.1"
   },
   "author": "sou",
   "license": "MIT",
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
