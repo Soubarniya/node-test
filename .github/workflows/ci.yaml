@@ -59,8 +59,7 @@ jobs:
           name: artifact
       
       - name: Verify artifact download
-        run: ls
-        
+        run: ls dist
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
