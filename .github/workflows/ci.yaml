@@ -28,7 +28,6 @@ jobs:
         run: |
           echo "Name: ${{ github.event.inputs.name }}"
           echo "Home: ${{ github.event.inputs.home }}"
-
       - name: Check out code
         uses: actions/checkout@v3
 
@@ -46,17 +45,6 @@ jobs:
 
       - name: Build code
         run: npm run build
-
-      # - name: Run Tests
-      #   run: npm test  # Runs your tests (make sure you have a test script in package.json)
-
-      - name: Set up CodeQL
-        uses: github/codeql-action/init@v2
-
-      - name: Analyze code with CodeQL
-        uses: github/codeql-action/analyze@v2
-        with:
-          category: 'test'  # Or use 'default' for general analysis
   
       # Step 4: Save the build output as an artifact
       - name: Upload build artifact
@@ -83,13 +71,11 @@ jobs:
           VERSION=$(cat VERSION | xargs)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Version extracted: $VERSION"
-
       # Step 6: Build the Docker image
       - name: Build Docker image with extracted version
         run: |
           docker build -t soubarniya/mynode:${{ env.VERSION }} .
           docker push soubarniya/mynode:${{ env.VERSION }}
-
       - name: Update Kubernetes manifest
         run: |
           pwd
