@@ -50,8 +50,17 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifact
-          path: dist/  # Replace 'dist/' with the correct output directory
+          name: artifact
+          path: dist # Replace 'dist/' with the correct output directory
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact
+      
+      - name: Verify artifact download
+        run: ls
+        
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
