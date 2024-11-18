@@ -7,16 +7,16 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      name:
-        description: 'sou'
-        required: true
-        default: 'hi'
-      home:
-        description: 'mumbai'
-        required: true
-        default: 'india'
+  # workflow_dispatch:
+  #   inputs:
+  #     name:
+  #       description: 'sou'
+  #       required: true
+  #       default: 'hi'
+  #     home:
+  #       description: 'mumbai'
+  #       required: true
+  #       default: 'india'
 
 jobs:
   build-and-deploy:
@@ -24,14 +24,14 @@ jobs:
 
     steps:
       # Step 1: Check out the code
-      - name: Print Inputs
-        run: |
-          echo "Name: ${{ github.event.inputs.name }}"
-          echo "Home: ${{ github.event.inputs.home }}"
+      # - name: Print Inputs
+      #   run: |
+      #     echo "Name: ${{ github.event.inputs.name }}"
+      #     echo "Home: ${{ github.event.inputs.home }}"
       - name: Check out code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js with caching for dependencies
+      Step 2: Set up Node.js with caching for dependencies
       - name: Set up Node.js with cache
         uses: actions/setup-node@v4
         with:
