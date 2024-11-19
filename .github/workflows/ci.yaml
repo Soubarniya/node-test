@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - devops
   pull_request:
     branches:
       - main
+      - devops
   # workflow_dispatch:
   #   inputs:
   #     name:
