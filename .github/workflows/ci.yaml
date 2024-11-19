@@ -5,30 +5,13 @@ on:
     branches:
       - devops
   pull_request:
-    branches:
-      - main
-      - devops
-  # workflow_dispatch:
-  #   inputs:
-  #     name:
-  #       description: 'sou'
-  #       required: true
-  #       default: 'hi'
-  #     home:
-  #       description: 'mumbai'
-  #       required: true
-  #       default: 'india'
+    
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the code
-      # - name: Print Inputs
-      #   run: |
-      #     echo "Name: ${{ github.event.inputs.name }}"
-      #     echo "Home: ${{ github.event.inputs.home }}"
       - name: Check out code
         uses: actions/checkout@v3
 
@@ -120,3 +103,12 @@ jobs:
           body: "This PR updates the Kubernetes manifest to use the Docker image version ${{ env.VERSION }}."
           labels: |
             automated-pr
+  
+  pull-request-only:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run PR specific checks
+        run: echo "Running checks specific to Pull Request"
