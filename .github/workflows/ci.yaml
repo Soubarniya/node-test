@@ -133,6 +133,11 @@ jobs:
       #     echo "Home: ${{ github.event.inputs.home }}"
       - name: Check out code
         uses: actions/checkout@v3
+      
+      - name: create pull request
+      run: gh pr create -B main -H devops --title 'Merge devops into main' --body 'Created by Github action'
+      env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       # Step 2: Set up Node.js with caching for dependencies
       - name: Set up Node.js with cache
