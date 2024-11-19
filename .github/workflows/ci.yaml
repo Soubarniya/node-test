@@ -15,35 +15,13 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js with caching for dependencies
-      - name: Set up Node.js with cache
-        uses: actions/setup-node@v4
-        with:
-          node-version: '16'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-
-      # Step 3: Install dependencies and build code
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build code
-        run: npm run build
-  
-      # Step 4: Save the build output as an artifact
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifact
-          path: dist # Replace 'dist/' with the correct output directory
-
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: artifact
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: artifact
       
-      - name: Verify artifact download
-        run: ls dist
+      # - name: Verify artifact download
+      #   run: ls dist
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -92,17 +70,6 @@ jobs:
             git add node.yaml
             git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
           fi
-#     # Step 9: Create a pull request
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          commit-message: "Updated node.yaml with version ${{ env.VERSION }}"
-          branch: devops${{ env.VERSION }}
-          title: "Update node.yaml for version ${{ env.VERSION }}"
-          body: "This PR updates the Kubernetes manifest to use the Docker image version ${{ env.VERSION }}."
-          labels: |
-            automated-pr
   
   pull-request-only:
     runs-on: ubuntu-latest
@@ -112,3 +79,24 @@ jobs:
         uses: actions/checkout@v3
       - name: Run PR specific checks
         run: echo "Running checks specific to Pull Request"
+        - name: Set up Node.js with cache
+          uses: actions/setup-node@v4
+          with:
+            node-version: '16'
+            cache: 'npm'
+            cache-dependency-path: '**/package-lock.json'
+
+        # Step 3: Install dependencies and build code
+        - name: Install dependencies
+          run: npm install
+
+        - name: Build code
+          run: npm run build
+    
+        # Step 4: Save the build output as an artifact
+        - name: Upload build artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: artifact
+            path: dist # Replace 'dist/' with the correct output directory
+      
