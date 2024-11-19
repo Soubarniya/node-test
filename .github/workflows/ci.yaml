@@ -79,7 +79,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Run PR specific checks
         run: echo "Running checks specific to Pull Request"
-        - name: Set up Node.js with cache
+      - name: Set up Node.js with cache
           uses: actions/setup-node@v4
           with:
             node-version: '16'
@@ -87,14 +87,14 @@ jobs:
             cache-dependency-path: '**/package-lock.json'
 
         # Step 3: Install dependencies and build code
-        - name: Install dependencies
+      - name: Install dependencies
           run: npm install
 
-        - name: Build code
+      - name: Build code
           run: npm run build
     
         # Step 4: Save the build output as an artifact
-        - name: Upload build artifact
+      - name: Upload build artifact
           uses: actions/upload-artifact@v4
           with:
             name: artifact
