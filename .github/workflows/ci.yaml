@@ -107,7 +107,6 @@ on:
   push:
     branches:
       - main
-      - devops
   pull_request:
     # branches:
     #   - main
