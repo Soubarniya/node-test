@@ -115,7 +115,7 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           commit-message: "Updated node.yaml with version ${{ env.VERSION }}"
-          branch: update-node-image-${{ env.VERSION }}
+          branch: devops${{ env.VERSION }}
           title: "Update node.yaml for version ${{ env.VERSION }}"
           body: "This PR updates the Kubernetes manifest to use the Docker image version ${{ env.VERSION }}."
           labels: |
