@@ -3,7 +3,6 @@ name: CI/CD Workflow
 on:
   push:
     branches:
-      - main
       - devops
   pull_request:
     branches:
@@ -121,4 +120,3 @@ jobs:
           body: "This PR updates the Kubernetes manifest to use the Docker image version ${{ env.VERSION }}."
           labels: |
             automated-pr
->>>>>>> 05acb11502cfd41165d463a1fdfe917f03a3fbf4
