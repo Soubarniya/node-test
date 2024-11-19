@@ -182,7 +182,7 @@ jobs:
           VERSION=$(cat VERSION | xargs)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Version extracted: $VERSION"
-      # Step 6: Build the Docker image
+      # Step 6: Build the Docker images
       - name: Build Docker image with extracted version
         run: |
           docker build -t soubarniya/mynode:${{ env.VERSION }} .
