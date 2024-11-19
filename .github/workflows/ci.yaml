@@ -98,5 +98,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact
-          path: dist # Replace 'dist/' with the correct output directories
+          path: dist # Replace 'dist/' with the correct output directory
       
