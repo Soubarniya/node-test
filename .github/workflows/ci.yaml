@@ -135,8 +135,8 @@ jobs:
         uses: actions/checkout@v3
       
       - name: create pull request
-      run: gh pr create -B main -H devops --title 'Merge devops into main' --body 'Created by Github action'
-      env:
+        run: gh pr create -B main -H devops --title 'Merge devops into main' --body 'Created by Github action'
+        env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       # Step 2: Set up Node.js with caching for dependencies
