@@ -108,7 +108,7 @@ jobs:
           else
             git add node.yaml
             git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
-
+          fi
 #     # Step 9: Create a pull request
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
