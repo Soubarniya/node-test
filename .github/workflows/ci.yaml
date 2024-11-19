@@ -1,5 +1,5 @@
 name: CI/CD Workflow
-
+#testing worflow
 on:
   push:
     branches:
@@ -7,6 +7,16 @@ on:
   pull_request:
     branches:
       - main
+  # workflow_dispatch:
+  #   inputs:
+  #     name:
+  #       description: 'sou'
+  #       required: true
+  #       default: 'hi'
+  #     home:
+  #       description: 'mumbai'
+  #       required: true
+  #       default: 'india'
 
 jobs:
   build-and-deploy:
@@ -14,6 +24,10 @@ jobs:
 
     steps:
       # Step 1: Check out the code
+      # - name: Print Inputs
+      #   run: |
+      #     echo "Name: ${{ github.event.inputs.name }}"
+      #     echo "Home: ${{ github.event.inputs.home }}"
       - name: Check out code
         uses: actions/checkout@v3
 
@@ -31,13 +45,21 @@ jobs:
 
       - name: Build code
         run: npm run build
-
+  
       # Step 4: Save the build output as an artifact
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifact
-          path: dist/  # Replace 'dist/' with the correct output directory
+          name: artifact
+          path: dist # Replace 'dist/' with the correct output directory
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact
+      
+      - name: Verify artifact download
+        run: ls dist
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -48,6 +70,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+      
           
       - name: Read version from VERSION file
         id: read_version
@@ -56,13 +79,11 @@ jobs:
           VERSION=$(cat VERSION | xargs)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Version extracted: $VERSION"
-
       # Step 6: Build the Docker image
       - name: Build Docker image with extracted version
         run: |
           docker build -t soubarniya/mynode:${{ env.VERSION }} .
           docker push soubarniya/mynode:${{ env.VERSION }}
-
       - name: Update Kubernetes manifest
         run: |
           pwd
@@ -86,6 +107,12 @@ jobs:
           else
             git add node.yaml
             git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
+<<<<<<< HEAD
             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Soubarniya/argocd.git
 
           fi
+=======
+            git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
+          fi
+#
+>>>>>>> 05acb11502cfd41165d463a1fdfe917f03a3fbf4
