@@ -107,12 +107,16 @@ jobs:
           else
             git add node.yaml
             git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
-<<<<<<< HEAD
-            git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Soubarniya/argocd.git
 
-          fi
-=======
-            git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
-          fi
-#
+#     # Step 9: Create a pull request
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          commit-message: "Updated node.yaml with version ${{ env.VERSION }}"
+          branch: update-node-image-${{ env.VERSION }}
+          title: "Update node.yaml for version ${{ env.VERSION }}"
+          body: "This PR updates the Kubernetes manifest to use the Docker image version ${{ env.VERSION }}."
+          labels: |
+            automated-pr
 >>>>>>> 05acb11502cfd41165d463a1fdfe917f03a3fbf4
