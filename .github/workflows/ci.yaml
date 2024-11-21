@@ -126,11 +126,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the code
-      # - name: Print Inputs
-      #   run: |
-      #     echo "Name: ${{ github.event.inputs.name }}"
-      #     echo "Home: ${{ github.event.inputs.home }}"
+      
       - name: Check out code
         uses: actions/checkout@v3
       
