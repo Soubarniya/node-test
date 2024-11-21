@@ -399,6 +399,8 @@ jobs:
     needs: Docker-Image-Build
 
     steps:  
+      - name: Check out code
+        uses: actions/checkout@v3
       - name: Push Docker image with extracted version
         if: github.event_name == 'push' 
         run: |
