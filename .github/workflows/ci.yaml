@@ -324,7 +324,7 @@ on:
   pull_request:
 
 jobs:
-  Code Build:
+  Code-Build:
     runs-on: ubuntu-latest
 
     steps:
@@ -363,7 +363,7 @@ jobs:
       - name: Verify artifact download
         run: ls dist
 
-  Docker Image Build:
+  Docker-Image-Build:
     runs-on: ubuntu-latest
 
     steps:
@@ -390,7 +390,7 @@ jobs:
         run: |
           docker build -t soubarniya/mynode:${{ env.VERSION }} .
 
-  Docker Image Push:
+  Docker-Image-Push:
     runs-on: ubuntu-latest
 
     steps:  
@@ -400,7 +400,7 @@ jobs:
 
           docker push soubarniya/mynode:${{ env.VERSION }}
 
-  K8s Manifest Update:
+  K8s-Manifest-Update:
     runs-on: ubuntu-latest
 
     steps: 
