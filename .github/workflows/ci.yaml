@@ -408,6 +408,7 @@ jobs:
           pwd
           ls -la
           git clone https://github.com/Soubarniya/argocd.git
+          git pull origin main
           ls -la
           cd argocd
           ls -la
