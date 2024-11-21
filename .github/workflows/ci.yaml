@@ -220,7 +220,7 @@ jobs:
             git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
           fi
-          
+
   handle-pr:
     runs-on: ubuntu-latest
     steps:
@@ -270,4 +270,4 @@ jobs:
           repository: node-test
 
       - name: Output PR Number
-        run: echo "PR Number: ${{ steps.check_pr.outputs.pr_number || steps.open_pr.outputs.pull_number }}"
+        run: echo "PR Number ${{ steps.check_pr.outputs.pr_number || steps.open_pr.outputs.pull_number }}"
