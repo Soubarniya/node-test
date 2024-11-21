@@ -365,7 +365,7 @@ jobs:
 
   Docker-Build-Push:
     runs-on: ubuntu-latest
-    needs: Docker-Image-Build
+    needs: Code-Build
 
     steps:  
       - name: Check out code
