@@ -320,8 +320,10 @@ on:
   push:
     branches:
       - main
-      
+      - devops
   pull_request:
+    branches:
+      - devops
       
 
 jobs:
@@ -385,7 +387,7 @@ jobs:
         id: read_version
         run: |
           # Read the entire content of the VERSION file and trim any surrounding whitespace
-          VERSION=$(cat VERSION | xargs)
+          VERSION=$(cat VERSION)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Version extracted: $VERSION"
 
