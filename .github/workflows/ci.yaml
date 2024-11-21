@@ -390,7 +390,7 @@ jobs:
         run: |
           docker build -t soubarniya/mynode:${{ env.VERSION }} .
 
-  Docker Image Build:
+  Docker Image Push:
     runs-on: ubuntu-latest
 
     steps:  
