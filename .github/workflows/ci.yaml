@@ -107,7 +107,6 @@ on:
   push:
     branches:
       - main
-      - devops
   pull_request:
     # branches:
     #   - main
@@ -221,57 +220,4 @@ jobs:
             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
           fi
 
-  handle-pr:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Check for Existing PR
-        id: check_pr
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const pullRequests = await github.rest.pulls.list({
-              owner: 'soubarniya',
-              repo: 'node-test',
-              head: 'soubarniya:devops'
-            });
-            if (pullRequests.data.length > 0) {
-              core.setOutput("pr_exists", true);
-              core.setOutput("pr_number", pullRequests.data[0].number);
-            } else {
-              core.setOutput("pr_exists", false);
-            }
-
-      - name: Create and Checkout devops Branch
-        run: |
-          git fetch origin devops || true
-          git checkout -b devops || git checkout devops
-
-      - name: Make Changes
-        run: |
-          echo "Updated content" >> example-file.txt
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Update content" || echo "No changes to commit"
-
-      - name: Push Changes to devops Branch
-        if: steps.check_pr.outputs.pr_exists == 'true'
-        run: |
-          git push origin devops
-
-      - name: Open PR
-        id: open_pr
-        if: steps.check_pr.outputs.pr_exists == 'false'
-        uses: rematocorp/open-pull-request-action@v1
-        with:
-          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          from-branch: devops
-          to-branch: main
-          repository-owner: soubarniya
-          repository: node-test
-
-      - name: Output PR Number
-        run: echo "PR Number ${{ steps.check_pr.outputs.pr_number || steps.open_pr.outputs.pull_number }}"
+  
