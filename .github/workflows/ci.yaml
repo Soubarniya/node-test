@@ -392,6 +392,7 @@ jobs:
       - name: Build Docker image with extracted version
         run: |
           docker build -t soubarniya/mynode:${{ env.VERSION }} .
+          docker images
 
       - name: Push Docker image with extracted version
         if: github.event_name == 'push' 
