@@ -107,7 +107,6 @@ on:
   push:
     branches:
       - main
-      # - devops
   pull_request:
     # branches:
     #   - main
@@ -220,19 +219,5 @@ jobs:
             git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
           fi
-  # example:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Open PR
-  #       id: open_pr
-  #       uses: rematocorp/open-pull-request-action@v1
-  #       with:
-  #         github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-  #         from-branch: devops
-  #         to-branch: main
-  #         repository-owner: soubarniya
-  #         repository: node-test
-          
-  #     - name: Echo mergeable PR number
-  #       run: echo ${{ steps.open_pr.outputs.pull_number }}
 
+  
