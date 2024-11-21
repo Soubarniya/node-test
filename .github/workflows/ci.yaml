@@ -244,14 +244,18 @@ jobs:
               core.setOutput("pr_exists", false);
             }
 
-      - name: Make Changes
-        if: always() # Run this step regardless of whether a PR exists
+      - name: Create and Checkout devops Branch
         run: |
-          echo "Making some changes..." > updated-file.txt
+          git fetch origin devops || true
+          git checkout -b devops || git checkout devops
+
+      - name: Make Changes
+        run: |
+          echo "Updated content" >> example-file.txt
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Update: Automatically add changes"
+          git commit -m "Update content" || echo "No changes to commit"
 
       - name: Push Changes to devops Branch
         if: steps.check_pr.outputs.pr_exists == 'true'
