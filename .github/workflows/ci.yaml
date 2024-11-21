@@ -407,8 +407,7 @@ jobs:
         run: |
           pwd
           ls -la
-          git clone https://github.com/Soubarniya/argocd.git
-          git pull origin main
+          git clone https://github.com/Soubarniya/argocd.gi
           ls -la
           cd argocd
           ls -la
