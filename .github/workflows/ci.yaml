@@ -400,11 +400,11 @@ jobs:
 
           docker push soubarniya/mynode:${{ env.VERSION }}
 
-  K8s-Manifest-Update:
-    runs-on: ubuntu-latest
-    needs: Docker-Build-Push
+  # K8s-Manifest-Update:
+  #   runs-on: ubuntu-latest
+  #   needs: Docker-Build-Push
 
-    steps: 
+  #   steps: 
       - name: Update Kubernetes manifest
         run: |
           pwd
