@@ -206,127 +206,17 @@
 
 
       
-name: CI/CD Workflow
-
-on:
-  push:
-    branches:
-      - main
-      - devops
-  pull_request:
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-
-      - name: Check out code
-        uses: actions/checkout@v3
-      
-
-      # Step 2: Set up Node.js with caching for dependencies
-      - name: Set up Node.js with cache
-        uses: actions/setup-node@v4
-        with:
-          node-version: '16'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-
-      # Step 3: Install dependencies and build cod
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build code
-        run: npm run build
-  
-      # Step 4: Save the build output as an artifact
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifact
-          path: dist # Replace 'dist/' with the correct output directory
-
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: artifact
-      
-      - name: Verify artifact download
-        run: ls dist
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      # Step 5: Log in to Docker Hub (or other registry)
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      
-          
-      - name: Read version from VERSION file
-        id: read_version
-        run: |
-          # Read the entire content of the VERSION file and trim any surrounding whitespace
-          VERSION=$(cat VERSION | xargs)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Version extracted: $VERSION"
-      # Step 6: Build the Docker images
-      - name: Build Docker image with extracted version
-        run: |
-          docker build -t soubarniya/mynode:${{ env.VERSION }} .
-          
-      - name: Push Docker image with extracted version
-        if: github.event_name == 'push' 
-        run: |
-
-          docker push soubarniya/mynode:${{ env.VERSION }}
-
-      - name: Update Kubernetes manifest
-        run: |
-          pwd
-          ls -la
-          git clone https://github.com/Soubarniya/argocd.git
-          ls -la
-          cd argocd
-          ls -la
-          # Create a new branch with a unique name (e.g., "update-node-version-${{ env.VERSION }}")
-          git checkout -b node-version-${{ env.VERSION }}
-          sed -i "s|image: soubarniya/mynode:.*|image: soubarniya/mynode:${{ env.VERSION }}|" node.yaml
-          git status
-          git diff
-          cat node.yaml
-          # Configure Git
-          # git init .
-          git config --global user.email "leosphere2001@gmail.com"
-          git config --global user.name "Soubarniya"
-          
-          # Commit and push changes if there’s an update
-          if git diff --exit-code --quiet; then
-            echo "No changes to commit."
-          else
-            git add node.yaml
-            git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
-            git pull --rebase origin node-version-${{ env.VERSION }} || echo "Branch doesn't exist remotely, continuing."
-            # git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
-            git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git node-version-${{ env.VERSION }}
-          fi
-
-      
-# name: Node.js CI/CD Workflow
+# name: CI/CD Workflow
 
 # on:
 #   push:
 #     branches:
 #       - main
+#       - devops
 #   pull_request:
-    
-      
 
 # jobs:
-#   Code-Build:
+#   build-and-deploy:
 #     runs-on: ubuntu-latest
 
 #     steps:
@@ -365,47 +255,35 @@ jobs:
 #       - name: Verify artifact download
 #         run: ls dist
 
-#   Docker-Build-Push:
-#     runs-on: ubuntu-latest
-#     needs: Code-Build
-
-#     steps:  
-#       - name: Check out code
-#         uses: actions/checkout@v3
-      
 #       - name: Set up Docker Buildx
 #         uses: docker/setup-buildx-action@v3
 
+#       # Step 5: Log in to Docker Hub (or other registry)
 #       - name: Log in to Docker Hub
 #         uses: docker/login-action@v3
 #         with:
 #           username: ${{ secrets.DOCKER_USERNAME }}
 #           password: ${{ secrets.DOCKER_PASSWORD }}
-
+      
+          
 #       - name: Read version from VERSION file
 #         id: read_version
 #         run: |
 #           # Read the entire content of the VERSION file and trim any surrounding whitespace
-#           VERSION=$(cat VERSION)
+#           VERSION=$(cat VERSION | xargs)
 #           echo "VERSION=$VERSION" >> $GITHUB_ENV
 #           echo "Version extracted: $VERSION"
-
+#       # Step 6: Build the Docker images
 #       - name: Build Docker image with extracted version
 #         run: |
 #           docker build -t soubarniya/mynode:${{ env.VERSION }} .
-#           docker images
-
+          
 #       - name: Push Docker image with extracted version
 #         if: github.event_name == 'push' 
 #         run: |
 
 #           docker push soubarniya/mynode:${{ env.VERSION }}
 
-#   # K8s-Manifest-Update:
-#   #   runs-on: ubuntu-latest
-#   #   needs: Docker-Build-Push
-
-#   #   steps: 
 #       - name: Update Kubernetes manifest
 #         run: |
 #           pwd
@@ -431,8 +309,132 @@ jobs:
 #           else
 #             git add node.yaml
 #             git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
+#             git pull --rebase origin node-version-${{ env.VERSION }} || echo "Branch doesn't exist remotely, continuing."
 #             # git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
 #             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git node-version-${{ env.VERSION }}
 #           fi
+
+      
+name: Node.js CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    
+      
+
+jobs:
+  Code-Build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Check out code
+        uses: actions/checkout@v3
+      
+
+      # Step 2: Set up Node.js with caching for dependencies
+      - name: Set up Node.js with cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      # Step 3: Install dependencies and build cod
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build code
+        run: npm run build
+  
+      # Step 4: Save the build output as an artifact
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact
+          path: dist # Replace 'dist/' with the correct output directory
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact
+      
+      - name: Verify artifact download
+        run: ls dist
+
+  Docker-Build-Push:
+    runs-on: ubuntu-latest
+    needs: Code-Build
+
+    steps:  
+      - name: Check out code
+        uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Read version from VERSION file
+        id: read_version
+        run: |
+          # Read the entire content of the VERSION file and trim any surrounding whitespace
+          VERSION=$(cat VERSION)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Version extracted: $VERSION"
+
+      - name: Build Docker image with extracted version
+        run: |
+          docker build -t soubarniya/mynode:${{ env.VERSION }} .
+          docker images
+
+      - name: Push Docker image with extracted version
+        if: github.event_name == 'push' 
+        run: |
+
+          docker push soubarniya/mynode:${{ env.VERSION }}
+
+  # K8s-Manifest-Update:
+  #   runs-on: ubuntu-latest
+  #   needs: Docker-Build-Push
+
+  #   steps: 
+      - name: Update Kubernetes manifest
+        run: |
+          pwd
+          ls -la
+          git clone https://github.com/Soubarniya/argocd.git
+          ls -la
+          cd argocd
+          ls -la
+          # Create a new branch with a unique name (e.g., "update-node-version-${{ env.VERSION }}")
+          git checkout -b node-version-${{ env.VERSION }}
+          sed -i "s|image: soubarniya/mynode:.*|image: soubarniya/mynode:${{ env.VERSION }}|" node.yaml
+          git status
+          git diff
+          cat node.yaml
+          # Configure Git
+          # git init .
+          git config --global user.email "leosphere2001@gmail.com"
+          git config --global user.name "Soubarniya"
+          
+          # Commit and push changes if there’s an update
+          if git diff --exit-code --quiet; then
+            echo "No changes to commit."
+          else
+            git add node.yaml
+            git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
+            git pull --rebase origin node-version-${{ env.VERSION }} || echo "Branch doesn't exist remotely, continuing."
+
+            # git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
+            git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git node-version-${{ env.VERSION }}
+          fi
 
   
