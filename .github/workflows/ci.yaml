@@ -408,6 +408,8 @@ jobs:
     needs: Docker-Build-Push
 
     steps: 
+      - name: Check out code
+        uses: actions/checkout@v3
       - name: Update Kubernetes manifest
         run: |
           pwd
