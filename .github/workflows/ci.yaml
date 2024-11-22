@@ -410,6 +410,10 @@ jobs:
     steps: 
       - name: Check out code
         uses: actions/checkout@v3
+      - name: Check for docker image
+        run: |
+          docker images
+          docker pull soubarniya/mynode:${{ env.VERSION }}
       - name: Update Kubernetes manifest
         run: |
           pwd
