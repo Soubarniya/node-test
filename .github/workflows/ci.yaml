@@ -322,9 +322,9 @@ on:
     branches:
       - main
       - devops
-  pull_request:
-    branches:
-      - devops
+  # pull_request:
+  #   branches:
+  #     - devops
     
       
 
