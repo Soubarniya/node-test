@@ -410,10 +410,17 @@ jobs:
     steps: 
       - name: Check out code
         uses: actions/checkout@v3
+      - name: Read version from VERSION file
+        id: read_version
+        run: |
+          # Read the entire content of the VERSION file and trim any surrounding whitespace
+          VERSION=$(cat VERSION)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Version extracted: $VERSION"
       - name: Check for docker image
         run: |
-          docker images
           docker pull soubarniya/mynode:${{ env.VERSION }}
+          docker images
       - name: Update Kubernetes manifest
         run: |
           pwd
