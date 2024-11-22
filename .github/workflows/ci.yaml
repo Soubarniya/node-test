@@ -309,6 +309,7 @@ jobs:
           else
             git add node.yaml
             git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
+            git pull --rebase origin node-version-${{ env.VERSION }} || echo "Branch doesn't exist remotely, continuing."
             # git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git node-version-${{ env.VERSION }}
           fi
