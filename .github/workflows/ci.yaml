@@ -322,6 +322,7 @@ on:
     branches:
       - main
       - devops
+      - development
   # pull_request:
   #   branches:
   #     - devops
