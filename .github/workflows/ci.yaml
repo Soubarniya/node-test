@@ -324,7 +324,7 @@ on:
       - devops
   # pull_request:
   #   branches:
-  #     - devop
+  #     - devops
     
       
 
