@@ -398,8 +398,9 @@ jobs:
           docker build -t soubarniya/mynode:${{ env.VERSION }} .
           docker images
 
-      - name: Push Docker image with extracted version
-        if: github.event_name == 'push' 
+      - name: Push Docker image with extracted version (main branch only)
+        # if: github.event_name == 'push' 
+        if: github.ref == 'refs/heads/main'
         run: |
 
           docker push soubarniya/mynode:${{ env.VERSION }}
