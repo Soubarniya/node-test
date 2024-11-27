@@ -324,7 +324,7 @@ on:
       - devops
   # pull_request:
   #   branches:
-  #     - devop
+  #     - devops
     
       
 
@@ -398,9 +398,8 @@ jobs:
           docker build -t soubarniya/mynode:${{ env.VERSION }} .
           docker images
 
-      - name: Push Docker image with extracted version (main branch only)
-        # if: github.event_name == 'push' 
-        if: github.ref == 'refs/heads/main'
+      - name: Push Docker image with extracted version
+        if: github.event_name == 'push' 
         run: |
 
           docker push soubarniya/mynode:${{ env.VERSION }}
@@ -408,6 +407,7 @@ jobs:
   K8s-Manifest-Update:
     runs-on: ubuntu-latest
     needs: Docker-Build-Push
+    if: github.ref == 'refs/heads/main' # Only run this job if the branch is 'main'
 
     steps: 
       - name: Check out code
