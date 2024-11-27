@@ -324,7 +324,7 @@ on:
       - devops
   # pull_request:
   #   branches:
-  #     - devops
+  #     - devop
     
       
 
@@ -335,14 +335,14 @@ jobs:
     steps:
 
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
 
       # Step 2: Set up Node.js with caching for dependencies
       - name: Set up Node.js with cache
         uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
 
@@ -360,13 +360,13 @@ jobs:
           name: artifact
           path: dist # Replace 'dist/' with the correct output directory
 
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: artifact
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: artifact
       
-      - name: Verify artifact download
-        run: ls dist
+      # - name: Verify artifact download
+      #   run: ls dist
 
   Docker-Build-Push:
     runs-on: ubuntu-latest
@@ -374,7 +374,7 @@ jobs:
 
     steps:  
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -410,7 +410,7 @@ jobs:
 
     steps: 
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Read version from VERSION file
         id: read_version
         run: |
