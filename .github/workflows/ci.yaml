@@ -399,7 +399,7 @@ jobs:
           docker images
 
       - name: Push Docker image with extracted version
-        if: github.event_name == 'push' 
+        if: github.ref == 'refs/heads/main'
         run: |
 
           docker push soubarniya/mynode:${{ env.VERSION }}
