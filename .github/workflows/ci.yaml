@@ -335,14 +335,14 @@ jobs:
     steps:
 
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
 
       # Step 2: Set up Node.js with caching for dependencies
       - name: Set up Node.js with cache
         uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
 
@@ -374,7 +374,7 @@ jobs:
 
     steps:  
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -410,7 +410,7 @@ jobs:
 
     steps: 
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Read version from VERSION file
         id: read_version
         run: |
