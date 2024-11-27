@@ -354,8 +354,8 @@ jobs:
         run: npm run build
   
       # Step 4: Save the build output as an artifact
-      # - name: Upload build artifact
-      #   uses: actions/upload-artifact@v4
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
       #   with:
       #     name: artifact
       #     path: dist # Replace 'dist/' with the correct output directory
