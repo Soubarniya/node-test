@@ -58,7 +58,7 @@ The workflow assumes the following files and directories:
 - Push changes to the `main`, `devops`, or `development` branches to trigger the workflow.
 - Ensure the `VERSION` file is updated with the correct version number before pushing.
 
-## Example Workflow File
+## Workflow File
 
 Below is the actual GitHub Actions YAML configuration for the pipeline:
 
