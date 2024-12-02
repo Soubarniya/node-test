@@ -18,8 +18,10 @@ jobs:
 
       - name: Check out code
         uses: actions/checkout@v4
-      
 
+      - name: List files
+        run: ls -al
+      
       # Step 2: Set up Node.js with caching for dependencies
       - name: Set up Node.js with cache
         uses: actions/setup-node@v4
