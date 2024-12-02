@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: node artifact
-          path: ./my-node-app # Replace 'dist/' with the correct output directory
+          path: dist # Replace 'dist/' with the correct output directory
 
   Docker-Build-Push:
     runs-on: ubuntu-latest
