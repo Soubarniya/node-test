@@ -41,7 +41,7 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: artifact
+          name: node artifact
           path: dist # Replace 'dist/' with the correct output directory
 
   Docker-Build-Push:
