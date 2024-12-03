@@ -36,6 +36,9 @@ jobs:
          echo "//npm.pkg.github.com/:_authToken=${{ secrets.PERSONAL_ACCESS_TOKEN }}" >> ~/.npmrc
          echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> ~/.npmrc
 
+      - name: Debug npm configuration
+        run: cat ~/.npmrc
+       
       - name: Publish package
         run: npm publish
 
