@@ -30,7 +30,15 @@ jobs:
           node-version: '20'
           cache: 'npm'
           # cache-dependency-path: '**/package-lock.json'
+      
+      - name: Configure npm to use GitHub Packages
+        run: |
+         echo "//npm.pkg.github.com/:_authToken=${{ secrets.PERSONAL_ACCESS_TOKEN }}" >> ~/.npmrc
+         echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> ~/.npmrc
 
+      - name: Publish package
+        run: npm publish
+        
       # Step 3: Install dependencies and build codes
       - name: Install dependencies
         run: npm install
