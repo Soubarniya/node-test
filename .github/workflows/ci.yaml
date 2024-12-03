@@ -33,11 +33,23 @@ jobs:
       # Step 3: Install dependencies and build codes
       - name: Install dependencies
         run: npm install
-
-      - name: Build code
+      
+      - name: Create build directory
+        run: mkdir build
+  
+      - name: Package app
         run: |
-          npm run 
-          ls
+          cp -r . build/
+          zip -r build/nodejs-app.zip build/
+  
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: nodejs-app
+          path: build/nodejs-app.zip
+
+      # - name: Build code
+      #   run: npm run 
       # # Step 4: Save the build output as an artifact
       # - name: Upload build artifact
       #   uses: actions/upload-artifact@v4
