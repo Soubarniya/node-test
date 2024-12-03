@@ -30,7 +30,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
 
-      # Step 3: Install dependencies and build code
+      # Step 3: Install dependencies and build codes
       - name: Install dependencies
         run: npm install
 
