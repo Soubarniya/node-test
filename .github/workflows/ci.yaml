@@ -38,7 +38,10 @@ jobs:
 
       - name: Debug npm configuration
         run: cat ~/.npmrc
-       
+      
+      - name: Check npm login status
+        run: npm whoami --registry=https://npm.pkg.github.com
+      
       - name: Publish package
         run: npm publish
 
