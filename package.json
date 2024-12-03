@@ -17,8 +17,6 @@
     "jest": "^29.7.0"
   },
   
-    "name": "@soubarniya/npm",
-    "version": "1.0.0",
     "publishConfig": {
       "registry": "https://npm.pkg.github.com"
     },
