@@ -29,7 +29,9 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          registry-url: https://npm.pkg.github.com/
           # cache-dependency-path: '**/package-lock.json'
+
       
       - name: Configure npm to use GitHub Packages
         run: |
@@ -44,6 +46,11 @@ jobs:
       
       - name: Publish package
         run: npm publish
+ 
+      - name: Publish npm package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Step 3: Install dependencies and build codes
       - name: Install dependencies

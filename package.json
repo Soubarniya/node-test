@@ -17,12 +17,15 @@
     "jest": "^29.7.0"
   },
   
+  
+    "name": "@soubarniya/npm-package",
+    "version": "1.0.0",
+    "description": "Package for Node.js",
+    "repository": "https://github.com/soubarniya/node-test",
     "publishConfig": {
-      "registry": "https://npm.pkg.github.com"
-    },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Soubarniya/node-test.git"
-  }
+      "registry": "https://npm.pkg.github.com/"
+    }
+  
+  
   
 }
