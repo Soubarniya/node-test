@@ -44,8 +44,8 @@ jobs:
       # - name: Check npm login status
       #   run: npm whoami --registry=https://npm.pkg.github.com
       
-      - name: Publish package
-        run: npm publish
+      # - name: Publish package
+      #   run: npm publish
  
       - name: Publish npm package
         run: npm publish
