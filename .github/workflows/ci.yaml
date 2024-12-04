@@ -29,28 +29,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          registry-url: https://npm.pkg.github.com/
-          # cache-dependency-path: '**/package-lock.json'
-
-      
-      # - name: Configure npm to use GitHub Packages
-      #   run: |
-      #    echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
-      #    echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> ~/.npmrc
-
-      # - name: Debug npm configuration
-      #   run: cat ~/.npmrc
-      
-      # - name: Check npm login status
-      #   run: npm whoami --registry=https://npm.pkg.github.com
-      
-      # - name: Publish package
-      #   run: npm publish/
- 
-      - name: Publish npm package
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          cache-dependency-path: '**/package-lock.json'
 
       # Step 3: Install dependencies and build codes
       - name: Install dependencies
@@ -72,12 +51,6 @@ jobs:
 
       # - name: Build code
       #   run: npm run 
-      # # Step 4: Save the build output as an artifact
-      # - name: Upload build artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: node artifact
-      #     path: dist # Replace 'dist/' with the correct output directory
 
   Docker-Build-Push:
     runs-on: ubuntu-latest
@@ -165,3 +138,4 @@ jobs:
             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git node-version-${{ env.VERSION }}
           fi
 
+# with caching
