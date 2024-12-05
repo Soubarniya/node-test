@@ -82,7 +82,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: user/app:latest
+          tags: soubarniya/mynode:$(VERSION)
           cache-from: type=registry,ref=soubarniya/mynode:buildcache
           cache-to: type=registry,ref=soubarniya/mynode:buildcache,mode=max
       # - name: Build Docker image with extracted version
