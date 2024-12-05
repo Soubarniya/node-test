@@ -60,8 +60,8 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
       
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -77,24 +77,24 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Version extracted: $VERSION"
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: soubarniya/mynode
-          cache-from: type=registry,ref=soubarniya/mynode:buildcache
-          cache-to: type=registry,ref=soubarniya/mynode:buildcache,mode=max
-      # - name: Build Docker image with extracted version
-      #   run: |
-      #     docker build -t soubarniya/mynode:${{ env.VERSION }} .
-      #     docker images
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: soubarniya/mynode
+      #     cache-from: type=registry,ref=soubarniya/mynode:buildcache
+      #     cache-to: type=registry,ref=soubarniya/mynode:buildcache,mode=max
+      - name: Build Docker image with extracted version
+        run: |
+          docker build -t soubarniya/mynode:${{ env.VERSION }} .
+          docker images
 
-      # - name: Push Docker image with extracted version
-      #   if: github.ref == 'refs/heads/main'
-      #   run: |
+      - name: Push Docker image with extracted version
+        if: github.ref == 'refs/heads/main'
+        run: |
 
-      #     docker push soubarniya/mynode:${{ env.VERSION }}
+          docker push soubarniya/mynode:${{ env.VERSION }}
 
   K8s-Manifest-Update:
     runs-on: ubuntu-latest
@@ -140,7 +140,7 @@ jobs:
           else
             git add node.yaml
             git commit -m "Updated node.yaml with version ${{ env.VERSION }} | GitHub Actions Pipeline"
-            git pull origin node-version-${{ env.VERSION }} || echo "Branch doesn't exist remotely, continuing."
+            git pull origin node-version-${{ env.VERSION }} --no-rebase || echo "Branch doesn't exist remotely, continuing."
 
             # git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git
             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/Soubarniya/argocd.git node-version-${{ env.VERSION }}
