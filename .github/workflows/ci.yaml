@@ -77,16 +77,24 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Version extracted: $VERSION"
 
-      - name: Build Docker image with extracted version
-        run: |
-          docker build -t soubarniya/mynode:${{ env.VERSION }} .
-          docker images
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: user/app:latest
+          cache-from: type=registry,ref=soubarniya/mynode:buildcache
+          cache-to: type=registry,ref=soubarniya/mynode:buildcache,mode=max
+      # - name: Build Docker image with extracted version
+      #   run: |
+      #     docker build -t soubarniya/mynode:${{ env.VERSION }} .
+      #     docker images
 
-      - name: Push Docker image with extracted version
-        if: github.ref == 'refs/heads/main'
-        run: |
+      # - name: Push Docker image with extracted version
+      #   if: github.ref == 'refs/heads/main'
+      #   run: |
 
-          docker push soubarniya/mynode:${{ env.VERSION }}
+      #     docker push soubarniya/mynode:${{ env.VERSION }}
 
   K8s-Manifest-Update:
     runs-on: ubuntu-latest
