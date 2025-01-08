@@ -148,7 +148,10 @@ jobs:
         id: trigger_run
         run: |
           RESPONSE=$(curl -X POST -H "Authorization: Bearer ${{ secrets.PORT_API_TOKEN }}" https://api.getport.io/v1/runs -d '{"job":"your-job-details"}')
-          echo "runId=$(echo $RESPONSE | jq -r '.runId')" >> $GITHUB_ENV
+          echo "Response from Port API: $RESPONSE"  # Log the response for debugging
+          runId=$(echo $RESPONSE | jq -r '.runId')
+          echo "runId=$runId" >> $GITHUB_ENV
+
           
       - name: Update Self-Service Run Status in Port
         uses: port-labs/port-github-action@v1
