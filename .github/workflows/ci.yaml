@@ -143,6 +143,13 @@ jobs:
             git commit -m "Updated node.yaml with version ${{ env.VERSION }}"
             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Soubarniya/argocd.git node-version-${{ env.VERSION }}
           fi
+  
+      - name: Trigger run in Port
+        id: trigger_run
+        run: |
+          RESPONSE=$(curl -X POST -H "Authorization: Bearer ${{ secrets.PORT_API_TOKEN }}" https://api.getport.io/v1/runs -d '{"job":"your-job-details"}')
+          echo "runId=$(echo $RESPONSE | jq -r '.runId')" >> $GITHUB_ENV
+          
       - name: Update Self-Service Run Status in Port
         uses: port-labs/port-github-action@v1
         with:
@@ -150,7 +157,7 @@ jobs:
           clientSecret: ${{ secrets.CLIENT_SECRET }}
           baseUrl: https://api.getport.io
           operation: PATCH_RUN
-          runId: ${{ env.PORT_RUN_ID }}
+          runId: ${{ env.runId }}
           icon: Kubernetes
           status: SUCCESS
           logMessage: "Deployment updated successfully"
