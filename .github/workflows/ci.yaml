@@ -144,24 +144,6 @@ jobs:
             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Soubarniya/argocd.git node-version-${{ env.VERSION }}
           fi
   
-      - name: Trigger run in Port
-        id: trigger_run
-        run: |
-          RESPONSE=$(curl -X POST -H "Authorization: Bearer ${{ secrets.PORT_API_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            https://app.getport.io/ciJobs \
-            -d '{"job":"your-job-details"}' -v)
-          echo "Response from Port API: $RESPONSE"
-      
-          runId=$(echo $RESPONSE | jq -r '.runId')
-          if [ -z "$runId" ] || [ "$runId" == "null" ]; then
-            echo "Error: runId is null or empty. Response: $RESPONSE"
-            exit 1
-          fi
-          echo "runId=$runId" >> $GITHUB_ENV
-
-
-          
       - name: Update Self-Service Run Status in Port
         uses: port-labs/port-github-action@v1
         with:
@@ -169,7 +151,6 @@ jobs:
           clientSecret: ${{ secrets.CLIENT_SECRET }}
           baseUrl: https://api.getport.io
           operation: PATCH_RUN
-          runId: ${{ env.runId }}
           icon: Kubernetes
           status: SUCCESS
           logMessage: "Deployment updated successfully"
