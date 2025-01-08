@@ -46,8 +46,8 @@ jobs:
           properties: |
             {
               "commitHash": "${{ github.sha }}",
-              "jobBranch": "${{ github.ref_name }}",
-              "runLink": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+              "jobBranch": "https://github.com/Soubarniya/node-test/tree/main",
+              "runLink": "${{ github.server_url }}${{ github.repository }}/actions/runs/${{ github.run_id }}",
               "triggeredBy": "${{ github.actor }}"
             }
 
