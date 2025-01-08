@@ -147,14 +147,19 @@ jobs:
       - name: Trigger run in Port
         id: trigger_run
         run: |
-          RESPONSE=$(curl -X POST -H "Authorization: Bearer ${{ secrets.PORT_API_TOKEN }}" https://api.getport.io/v1/runs -d '{"job":"your-job-details"}')
+          RESPONSE=$(curl -X POST -H "Authorization: Bearer ${{ secrets.PORT_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            https://api.getport.io/v1/runs \
+            -d '{"job":"your-job-details"}' -v)
           echo "Response from Port API: $RESPONSE"
+      
           runId=$(echo $RESPONSE | jq -r '.runId')
           if [ -z "$runId" ] || [ "$runId" == "null" ]; then
-            echo "Error: runId is null or empty"
+            echo "Error: runId is null or empty. Response: $RESPONSE"
             exit 1
           fi
           echo "runId=$runId" >> $GITHUB_ENV
+
 
           
       - name: Update Self-Service Run Status in Port
