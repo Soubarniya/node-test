@@ -142,7 +142,7 @@ jobs:
             git add node.yaml
             git commit -m "Updated node.yaml with version ${{ env.VERSION }}"
             git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Soubarniya/argocd.git node-version-${{ env.VERSION }}
-
+          fi
       - name: Update Self-Service Run Status in Port
         uses: port-labs/port-github-action@v1
         with:
