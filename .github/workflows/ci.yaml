@@ -94,7 +94,7 @@ jobs:
             {
               "imageTag": "${{ env.VERSION }}",
               "imageRegistry": "https://hub.docker.com/r/soubarniya/mynode",
-              "size": "n/a"
+              "size": "100"
             }
 
       - name: Link ciJob to Image Entity in Port
