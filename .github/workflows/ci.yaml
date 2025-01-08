@@ -149,7 +149,7 @@ jobs:
         run: |
           RESPONSE=$(curl -X POST -H "Authorization: Bearer ${{ secrets.PORT_API_TOKEN }}" \
             -H "Content-Type: application/json" \
-            https://api.getport.io/v1/runs \
+            https://app.getport.io/ciJobs \
             -d '{"job":"your-job-details"}' -v)
           echo "Response from Port API: $RESPONSE"
       
