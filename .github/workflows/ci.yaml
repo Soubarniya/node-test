@@ -46,7 +46,7 @@ jobs:
           properties: |
             {
               "commitHash": "${{ github.sha }}",
-              "jobBranch": "https://github.com/Soubarniya/node-test/tree/main",
+              "jobBranch": "https://github.com/${{ github.repository }}/tree/${{ github.ref_name }}",
               "runLink": "${{ github.server_url }}${{ github.repository }}/actions/runs/${{ github.run_id }}",
               "triggeredBy": "${{ github.actor }}"
             }
@@ -93,7 +93,7 @@ jobs:
           properties: |
             {
               "imageTag": "${{ env.VERSION }}",
-              "imageRegistry": "soubarniya/mynode",
+              "imageRegistry": "https://hub.docker.com/r/soubarniya/mynode",
               "size": "n/a"
             }
 
